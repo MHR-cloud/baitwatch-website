@@ -8,7 +8,7 @@ from tensorflow import keras
 # ── Config ───────────────────────────────────────────────
 IMG_SIZE   = (256, 256)
 MODEL_PATH = './best_model.keras'
-BG_PATH    = '/Users/marcribeiro/code/Legregs/baitwatch/training_data_species_grouped/fondmarin.jpg'
+BG_PATH    = 'fondmarin.jpg'
 
 # ── Page config ──────────────────────────────────────────
 st.set_page_config(
