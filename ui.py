@@ -271,17 +271,17 @@ def afficher_bulles():
 
 def afficher_requin():
     """
-    Affiche un requin de face qui fonce vers l'écran.
+    Affiche un requin animé (GIF transparent) qui fonce vers l'écran.
 
     Animation en 3 phases :
         1. Le requin apparaît petit au centre (loin dans l'eau)
         2. Il grossit en fonçant vers nous (scale 0.1 → 2.5)
         3. L'écran "tremble" légèrement quand il est proche
-        4. Il ouvre la gueule puis disparaît
+        4. Il disparaît
 
-    100% CSS + image base64, zéro JS, zéro dépendance.
+    100% CSS + GIF base64, zéro JS, zéro dépendance.
     """
-    # Charger l'image requin en base64
+    # Charger le GIF requin en base64
     with open(SHARK_PATH, "rb") as f:
         shark_b64 = base64.b64encode(f.read()).decode()
 
@@ -352,6 +352,6 @@ def afficher_requin():
         <div class="panique-bulle"></div>
         <div class="panique-bulle"></div>
         <div class="panique-bulle"></div>
-        <img class="requin-img" src="data:image/png;base64,{shark_b64}" />
+        <img class="requin-img" src="data:image/gif;base64,{shark_b64}" />
     </div>
     """, unsafe_allow_html=True)

@@ -35,7 +35,7 @@ API_URL = st.secrets["API_URL"]
 # Chemins des images (relatifs au dossier assets/)
 BG_PATH = os.path.join(ASSETS_DIR, "fondmarin.jpg")
 LOGO_PATH = os.path.join(ASSETS_DIR, "image_manta.jpg")
-SHARK_PATH = os.path.join(ASSETS_DIR, "requin.png")
+SHARK_PATH = os.path.join(ASSETS_DIR, "requin.gif")
 
 # Mapping des espèces : relie chaque class_id à un nom lisible
 # → À compléter avec les vraies classes de ton modèle
