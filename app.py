@@ -1,149 +1,139 @@
+"""
+🐟 Baitwatch — Fish Detector
+=============================
+Point d'entrée de l'application Streamlit.
+
+Architecture :
+    app.py      → ce fichier (flux principal)
+    config.py   → constantes, traductions, t()
+    api.py      → appel API, interprétation résultat
+    ui.py       → affichage CSS, résultats, bulles
+    assets/     → images (fondmarin.jpg, image_manta.jpg)
+
+Lancer : streamlit run app.py
+"""
+
 import streamlit as st
-import numpy as np
 import base64
-import time
-import requests
-import io
 from PIL import Image
 
-# ── Config ───────────────────────────────────────────────
-API_URL = "https://baitwatch-98031171918.europe-west1.run.app/detect-fishes/"
-BG_PATH = 'fondmarin.jpg'
+from config import LOGO_PATH, t
+from api import appel_api, interpreter_resultat
+from ui import charger_fond, afficher_resultat, afficher_erreur, afficher_bulles, afficher_requin
 
-# ── Page config ──────────────────────────────────────────
-st.set_page_config(
-    page_title="Baitwatch — Fish Detector",
-    page_icon="🐟",
-    layout="centered"
-)
 
-# ── Background local ─────────────────────────────────────
-def get_base64(path):
-    with open(path, 'rb') as f:
-        return base64.b64encode(f.read()).decode()
+def main():
+    """
+    Point d'entrée de l'application.
 
-bg = get_base64(BG_PATH)
+    Flux :
+        0. L'utilisateur choisit la langue (VF / VFISH)
+        1. Il choisit "fonf" ou "ifsp"
+        2. Il uploade une image BRUV
+        3. On envoie l'image à l'API
+        4. On interprète la réponse
+        5. On affiche le résultat + bulles
+    """
+    # ── Config page (DOIT être le 1er appel Streamlit) ───
+    st.set_page_config(
+        page_title="Baitwatch — Fish Detector",
+        page_icon=Image.open(LOGO_PATH),
+        layout="centered",
+    )
 
-# ── CSS ──────────────────────────────────────────────────
-st.markdown(f"""
-<style>
-.stApp {{
-    background-image: url("data:image/jpeg;base64,{bg}");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-}}
-section[data-testid="stMain"] > div {{
-    background-color: rgba(0, 10, 30, 0.72);
-    padding: 2.5rem 3rem;
-    border-radius: 20px;
-    max-width: 900px;
-    margin: auto;
-}}
-h1 {{
-    text-align: center;
-    color: #00d4ff !important;
-    font-size: 2.8rem !important;
-    text-shadow: 0 0 25px rgba(0,212,255,0.6);
-    letter-spacing: 2px;
-}}
-.subtitle {{
-    text-align: center;
-    color: #a0d8ef;
-    font-size: 1rem;
-    margin-bottom: 2rem;
-    opacity: 0.85;
-}}
-[data-testid="stFileUploader"] {{
-    background: rgba(0,212,255,0.05);
-    border: 2px dashed rgba(0,212,255,0.35);
-    border-radius: 14px;
-    padding: 1rem;
-}}
-[data-testid="stMetric"] {{
-    background: rgba(0,212,255,0.08);
-    border-radius: 12px;
-    padding: 1rem;
-    border: 1px solid rgba(0,212,255,0.2);
-}}
-[data-testid="stMetricValue"] {{
-    color: #00d4ff !important;
-    font-size: 2.5rem !important;
-}}
-.stProgress > div > div {{
-    background: linear-gradient(90deg, #0077b6, #00d4ff) !important;
-    border-radius: 10px;
-}}
-hr {{ border-color: rgba(0,212,255,0.2); }}
-.stCaption {{ color: #7fb3c8 !important; }}
-</style>
-""", unsafe_allow_html=True)
+    # ── Initialiser la langue dans session_state ─────────
+    if "lang" not in st.session_state:
+        st.session_state["lang"] = "fr"
 
-# ── Interface ────────────────────────────────────────────
-st.title("Baitwatch — Fish Detector")
-st.markdown('<p class="subtitle">Détection automatique de poissons dans des images BRUV sous-marines</p>', unsafe_allow_html=True)
-st.divider()
+    # ── Style ────────────────────────────────────────────
+    charger_fond()
 
-uploaded_file = st.file_uploader("📂 Uploade une image BRUV", type=["jpg", "jpeg", "png"])
-
-if uploaded_file is not None:
-
-    col1, col2 = st.columns([1, 1])
-
-    with col1:
-        image = Image.open(uploaded_file)
-        st.image(image, caption="Image analysée", width=400)
-
-    with col2:
-        with st.spinner("🔍 Analyse en cours..."):
-
-            # Envoie l'image à l'API
-            img_bytes = io.BytesIO()
-            image.save(img_bytes, format='JPEG')
-            img_bytes.seek(0)
-
-            response = requests.post(
-                API_URL,
-                params={"detection_type": "fonf"},
-                files={"image_file": ("image.jpg", img_bytes, "image/jpeg")}
-            )
-            result = response.json()
-            proba  = float(result.get("probability", 0))
-
-        st.markdown("### Résultat")
-        st.metric(label="Probabilité de présence d'un poisson", value=f"{proba:.1%}")
-        st.progress(proba)
-        st.divider()
-
-        if proba > 0.8:
-            st.success("**Poisson détecté avec haute confiance !**")
-
-            placeholder = st.empty()
-            positions = [5, 20, 35, 50, 65, 80]
-            for step in range(40):
-                x = (step * 3) % 115
-                fish_html = f"""
-                <div style="position:relative; height:70px; overflow:hidden;">
-                {"".join([f'''
-                <svg style="position:absolute; left:{(x + p) % 115}%;"
-                     width="70" height="35" viewBox="0 0 120 60">
-                  <ellipse cx="60" cy="30" rx="45" ry="15" fill="#f4a832" opacity="0.95"/>
-                  <ellipse cx="60" cy="35" rx="38" ry="9" fill="#ffd580" opacity="0.5"/>
-                  <polygon points="15,25 0,10 18,25" fill="#e07b10"/>
-                  <polygon points="15,35 0,50 18,35" fill="#e07b10"/>
-                  <polygon points="55,17 65,5 72,17" fill="#e07b10"/>
-                  <circle cx="95" cy="27" r="4" fill="white"/>
-                  <circle cx="96" cy="27" r="2" fill="#1a1a2e"/>
-                </svg>''' for p in positions])}
-                </div>
-                """
-                placeholder.markdown(fish_html, unsafe_allow_html=True)
-                time.sleep(0.04)
-            placeholder.empty()
-
-        elif proba > 0.5:
-            st.warning("**Poisson probablement présent**")
+    # ── Bouton langue (en haut à droite) ─────────────────
+    _, col_lang = st.columns([5, 1])
+    with col_lang:
+        if st.session_state["lang"] == "fr":
+            bouton_label = "🐟 VFISH"
         else:
-            st.error("**Aucun poisson détecté**")
+            bouton_label = "🇫🇷 VF"
 
-        st.caption(f"Confiance : {proba:.4f} | Seuil de décision : 0.50")
+        if st.button(bouton_label, use_container_width=True):
+            st.session_state["lang"] = "en" if st.session_state["lang"] == "fr" else "fr"
+            st.rerun()
+
+    # ── En-tête ──────────────────────────────────────────
+    with open(LOGO_PATH, "rb") as f:
+        logo_b64 = base64.b64encode(f.read()).decode()
+
+    st.markdown(f"""
+    <h1 style="display: flex; align-items: center; justify-content: center; gap: 0.6rem;">
+        <img src="data:image/jpeg;base64,{logo_b64}"
+             style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;" />
+        Baitwatch
+    </h1>
+    """, unsafe_allow_html=True)
+
+    st.markdown(f"""
+    <p style="text-align: center; color: white; font-size: 1rem; margin-top: -0.5rem; margin-bottom: 1.5rem;">
+        {t("subtitle")}
+    </p>
+    """, unsafe_allow_html=True)
+    st.divider()
+
+    # ── Étape 1 : choix du modèle ────────────────────────
+    detection_type = st.radio(
+        t("radio_label"),
+        options=["fonf", "ifsp"],
+        format_func=lambda x: t("model_fonf") if x == "fonf" else t("model_ifsp"),
+        horizontal=True,
+    )
+
+    # ── Étape 2 : upload de l'image ──────────────────────
+    uploaded = st.file_uploader(
+        t("upload_label"),
+        type=["jpg", "jpeg", "png"],
+    )
+
+    if uploaded is None:
+        st.info(t("upload_hint"))
+        return
+
+    # ── Étape 3 : affichage image + résultat côte à côte ─
+    image = Image.open(uploaded)
+    col_img, col_result = st.columns(2)
+
+    with col_img:
+        st.image(image, caption=t("image_caption"), use_container_width=True)
+
+    with col_result:
+
+        # Étape 4 : appel API
+        with st.spinner(t("spinner")):
+            try:
+                result_brut = appel_api(image, detection_type)
+            except Exception as e:
+                afficher_erreur(e)
+                return
+
+        # Étape 5 : interpréter + afficher
+        data = interpreter_resultat(result_brut, detection_type)
+        afficher_resultat(data)
+
+        # Debug : voir ce que l'API renvoie (à retirer en prod)
+        with st.expander(t("debug_label")):
+            st.json(result_brut)
+
+    # ── Animation post-analyse ─────────────────────────────
+    # > 75% → bulles paisibles 🫧
+    # ≤ 75% → requin qui fonce 🦈
+    if data["proba"] > 0.75:
+        afficher_bulles()
+    else:
+        afficher_requin()
+
+    # ── Footer ───────────────────────────────────────────
+    st.divider()
+    st.caption(t("footer"))
+
+
+if __name__ == "__main__":
+    main()
