@@ -1,4 +1,3 @@
 streamlit
-keras
 numpy
 Pillow

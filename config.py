@@ -30,7 +30,7 @@ ASSETS_DIR = os.path.join(BASE_DIR, "assets")
 # ═══════════════════════════════════════════════════════════
 
 # URL de notre API sur Cloud Run
-API_URL = "https://baitwatch-98031171918.europe-west1.run.app/detect-fishes/"
+API_URL = st.secrets["API_URL"]
 
 # Chemins des images (relatifs au dossier assets/)
 BG_PATH = os.path.join(ASSETS_DIR, "fondmarin.jpg")
