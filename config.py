@@ -62,7 +62,7 @@ SPECIES = {
         7: "*Scorpaeniformes* - Scorpionfish",
         8: "*Tetraodontiformes* - Pufferfish"
     },
-}}
+}
 
 # Seuils de confiance pour l'interprétation
 SEUIL_HAUT = 0.80   # au-dessus → "haute confiance"
