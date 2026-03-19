@@ -41,26 +41,24 @@ SHARK_PATH = os.path.join(ASSETS_DIR, "requin.gif")
 # Format : "*Nom latin* - Traduction"
 SPECIES = {
     "fr": {
-        0: "Aucun poisson",
-        1: "<i>Carcharhiniformes</i> - Requin",
-        2: "<i>Chrysophrys auratus</i> - Daurade royale",
-        3: "<i>Moridae</i> - Morue profonde",
-        4: "<i>Perciformes</i> (sableux) - Perche de sable",
-        5: "<i>Perciformes</i> (argenté) - Perche argentée",
-        6: "<i>Raja</i> - Raie",
-        7: "<i>Scorpaeniformes</i> - Rascasse",
-        8: "<i>Tetraodontiformes</i> - Poisson-globe"
+        0: "<i>Carcharhiniformes</i> - Requin",
+        1: "<i>Chrysophrys auratus</i> - Daurade royale",
+        2: "<i>Moridae</i> - Morue profonde",
+        3: "<i>Perciformes</i> (sableux) - Perche de sable",
+        4: "<i>Perciformes</i> (argenté) - Perche argentée",
+        5: "<i>Raja</i> - Raie",
+        6: "<i>Scorpaeniformes</i> - Rascasse",
+        7: "<i>Tetraodontiformes</i> - Poisson-globe"
     },
     "en": {
-        0: "No fish",
-        1: "<i>Carcharhiniformes</i> - Ground Shark",
-        2: "<i>Chrysophrys auratus</i> - Snapper",
-        3: "<i>Moridae</i> - Deep-sea Cod",
-        4: "<i>Perciformes</i> (sandy) - Sand Perch",
-        5: "<i>Perciformes</i> (silver) - Silver Perch",
-        6: "<i>Raja</i> - Ray",
-        7: "<i>Scorpaeniformes</i> - Scorpionfish",
-        8: "<i>Tetraodontiformes</i> - Pufferfish"
+        0: "<i>Carcharhiniformes</i> - Ground Shark",
+        1: "<i>Chrysophrys auratus</i> - Snapper",
+        2: "<i>Moridae</i> - Deep-sea Cod",
+        3: "<i>Perciformes</i> (sandy) - Sand Perch",
+        4: "<i>Perciformes</i> (silver) - Silver Perch",
+        5: "<i>Raja</i> - Ray",
+        6: "<i>Scorpaeniformes</i> - Scorpionfish",
+        7: "<i>Tetraodontiformes</i> - Pufferfish"
     },
 }
 
