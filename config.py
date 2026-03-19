@@ -38,25 +38,31 @@ LOGO_PATH = os.path.join(ASSETS_DIR, "image_manta.jpg")
 SHARK_PATH = os.path.join(ASSETS_DIR, "requin.gif")
 
 # Mapping des espèces : relie chaque class_id à un nom lisible
-# → À compléter avec les vraies classes de ton modèle
+# Format : "*Nom latin* - Traduction"
 SPECIES = {
     "fr": {
         0: "Aucun poisson",
         1: "Poisson (générique)",
-        2: "Espèce A",
-        3: "Espèce B",
-        4: "Espèce C",
-        5: "Espèce D",
-        6: "Espèce E",
+        2: "*Carcharhiniformes* - Requin",
+        3: "*Chrysophrys auratus* - Daurade royale",
+        4: "*Moridae* - Morue profonde",
+        5: "*Perciformes* (sableux) - Perche de sable",
+        6: "*Perciformes* (argenté) - Perche argentée",
+        7: "*Raja* - Raie",
+        8: "*Scorpaeniformes* - Rascasse",
+        9: "*Tetraodontiformes* - Poisson-globe"
     },
     "en": {
         0: "No fish",
         1: "Fish (generic)",
-        2: "Species A",
-        3: "Species B",
-        4: "Species C",
-        5: "Species D",
-        6: "Species E",
+        2: "*Carcharhiniformes* - Ground Shark",
+        3: "*Chrysophrys auratus* - Snapper",
+        4: "*Moridae* - Deep-sea Cod",
+        5: "*Perciformes* (sandy) - Sand Perch",
+        6: "*Perciformes* (silver) - Silver Perch",
+        7: "*Raja* - Ray",
+        8: "*Scorpaeniformes* - Scorpionfish",
+        9: "*Tetraodontiformes* - Pufferfish"
     },
 }
 
@@ -83,8 +89,8 @@ TEXTES = {
         "model_ifsp":       "🔬 Identifier l'espèce",
 
         # Upload
-        "upload_label":     "📂 Uploade une image BRUV",
-        "upload_hint":      "☝️ Uploade une image pour lancer l'analyse.",
+        "upload_label":     "📂 Upload une image BRUV",
+        "upload_hint":      "☝️ Upload une image pour lancer l'analyse.",
         "image_caption":    "Image analysée",
 
         # Analyse
