@@ -42,25 +42,25 @@ SHARK_PATH = os.path.join(ASSETS_DIR, "requin.gif")
 SPECIES = {
     "fr": {
         0: "Aucun poisson",
-        1: "*Carcharhiniformes* - Requin",
-        2: "*Chrysophrys auratus* - Daurade royale",
-        3: "*Moridae* - Morue profonde",
-        4: "*Perciformes* (sableux) - Perche de sable",
-        5: "*Perciformes* (argenté) - Perche argentée",
-        6: "*Raja* - Raie",
-        7: "*Scorpaeniformes* - Rascasse",
-        8: "*Tetraodontiformes* - Poisson-globe"
+        1: "<i>Carcharhiniformes</i> - Requin",
+        2: "<i>Chrysophrys auratus</i> - Daurade royale",
+        3: "<i>Moridae</i> - Morue profonde",
+        4: "<i>Perciformes</i> (sableux) - Perche de sable",
+        5: "<i>Perciformes</i> (argenté) - Perche argentée",
+        6: "<i>Raja</i> - Raie",
+        7: "<i>Scorpaeniformes</i> - Rascasse",
+        8: "<i>Tetraodontiformes</i> - Poisson-globe"
     },
     "en": {
         0: "No fish",
-        1: "*Carcharhiniformes* - Ground Shark",
-        2: "*Chrysophrys auratus* - Snapper",
-        3: "*Moridae* - Deep-sea Cod",
-        4: "*Perciformes* (sandy) - Sand Perch",
-        5: "*Perciformes* (silver) - Silver Perch",
-        6: "*Raja* - Ray",
-        7: "*Scorpaeniformes* - Scorpionfish",
-        8: "*Tetraodontiformes* - Pufferfish"
+        1: "<i>Carcharhiniformes</i> - Ground Shark",
+        2: "<i>Chrysophrys auratus</i> - Snapper",
+        3: "<i>Moridae</i> - Deep-sea Cod",
+        4: "<i>Perciformes</i> (sandy) - Sand Perch",
+        5: "<i>Perciformes</i> (silver) - Silver Perch",
+        6: "<i>Raja</i> - Ray",
+        7: "<i>Scorpaeniformes</i> - Scorpionfish",
+        8: "<i>Tetraodontiformes</i> - Pufferfish"
     },
 }
 
